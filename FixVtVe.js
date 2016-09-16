@@ -8,43 +8,59 @@ data = '[{'+
         '}]';
 
 //global variable constructed the request url.
-var vt, ve, target_url, id = "";
+var vt, ve, id =0;
+var target_url = "";
 
 /**
  * Compile data from html form
  */
 function getFormValue(){
-
     var x = document.getElementById("frm1");
-    var i;
-    var text="";
-    for (i = 0; i < x.length ;i++) {
-        text += x.elements[i].value;
-    }
+    id = x.ad_slot_id.value;
+    vt = x.target_vt.value * (x.current_imp.value+1) 
+        - x.current_vt.value * x.current_imp.value;
+    ve = x.target_ve.value * (x.current_imp.value+1) 
+        - x.current_ve.value * x.current_imp.value;
 
-    document.getElementById("demo").innerHTML = x.ad_slot_id.value;
+    startRequest(id, vt, ve);
 }
 
 /**
- * Compile data from data locally.
+ * Compile from local data.
  */
 function getDataValue() {
 
     var output = JSON.parse(data);
     id = output[0].ad_slot_id;
-
     vt = output[0].target_vt * (output[0].current_imp+1) 
         - output[0].current_vt * output[0].current_imp;
     ve = output[0].target_ve * (output[0].current_imp+1) 
         - output[0].current_ve * output[0].current_imp;
 
-    console.log("vt:",vt, "ve:", ve);
-    var url = "http://adserver.vradx.com/sdk?p=" + id;
-    startRequest(url);
+    startRequest(id, vt, ve);
 }
-
-function startRequest(url){
-    getData(url,checkResponse);
+/**
+ * Use url update vt & ve
+ *
+ * @param {int}   id    ad slot id
+ * @param {int}   vt    calculated vt value
+ * @param {int}   ve    calculated ve value
+ */
+function startRequest(id, vt, ve){    
+    console.log("id:",id ," vt:",vt, " ve:", ve);
+    if (vt<=100 || ve>100 || ve<=0){
+        var error_message = "vt value should not be less than 100ms.\n"
+        +"ve value should be be >= 100 or <= 0";
+        alert (error_message);
+    }
+    else if (id <=0 ){
+        var error_message = "id incorrect";
+        alert (error_message);
+    }
+    else {
+        var url = "http://adserver.vradx.com/sdk?p=" + id;
+        getData(url,checkResponse);
+    }
 }
 
 /**
@@ -91,7 +107,6 @@ function  checkResponse(res){
         if( view_stat_url != null){
             target_url = view_stat_url.replace("${VIEW_TIME}", vt);
             target_url = target_url.replace("${VIEW_EFFECTIVENESS}", ve);
-            console.log(target_url);
             document.getElementById("demo").innerHTML = target_url;
             updateVtVe (target_url);
         }else{
@@ -105,12 +120,12 @@ function  checkResponse(res){
 
 /**
  * use url update vt & ve
- * @param {string}   url        request url
+ *
+ * @param {string} url   request url
  */
 function updateVtVe (url){
-    console.log(url);
     var xhr =  createXHR(); 
     xhr.open("GET",url);      
     xhr.send(null);          
-    console.log(xhr.status);
+    console.log("xhr status: ", xhr.status);
 }
