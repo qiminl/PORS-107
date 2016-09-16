@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Page Title</title>
+  <script src="FixVtVe.js"></script>
+
+</head>
+
+<body>
+
+<h2>Vt and Ve manipulation tool</h2>
+<h4>Method#1 Fill in the data with ad details.</h4>
+
+<form id="frm1" action="form_action.asp">
+  ad_slot_id: 	<input type="int" name="ad_slot_id" value="0"><br><br>
+  current_imp:	<input type="int" name="current_imp" value="0"><br><br>
+  current_vt: 	<input type="int" name="current_vt" value="0"><br><br>
+  target_vt: 	<input type="int" name="target_vt" value="0"><br><br>
+  current_ve: 	<input type="int" name="current_ve" value="0"><br><br>
+  target_ve: 	<input type="int" name="target_ve" value="0"><br><br>
+</form>
+
+<button type="button" onclick="getFormValue()">Submit</button>
+
+
+<h4>Method#2 You can change the data within the js file:</h4>
+eg: data = '[{'+<br>
+            '"ad_slot_id"   :117,   '+<br>
+            '"current_imp"  :1,    '+<br>
+            '"current_vt"   :0,     '+<br>
+            '"target_vt"    :500,   '+<br>
+            '"current_ve"   :0,     '+<br>
+            '"target_ve"    :40     '+<br>
+        '}]';<br>
+<br>
+<button type="button" onclick="getDataValue()">Submit</button>
+
+
+<p id="demo"> Output </p>
+
+
+</body>
+</html>
+
