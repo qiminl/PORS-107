@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>UNDER CONSTRUCTION</title>
+  <script src="CIA.js"></script>
+
+</head>
+
+<body>
+
+<h2>Click Imp Acq tool</h2>
+<h4>Method#1 Fill in the data with ad details.</h4>
+
+<form id="frm1" action="form_action.asp">
+<h4>MUST HAVE </h4>
+	ad_slot_id: 	<input type="int" name="ad_slot_id" value=117><br><br>
+	current_imp:	<input type="int" name="current_imp" value=10><br><br>
+
+<h4>Default value set for changing click, imp, acq</h4>
+	target_imp: 	<input type="double" name="target_imp" value="-0"><br><br>
+	current_click: 	<input type="double" name="current_click" value="0"><br><br>
+	target_click: 	<input type="double" name="target_click" value="0"><br><br>
+	current_acq: 	<input type="double" name="current_click" value="0"><br><br>
+	target_acq: 	<input type="double" name="target_acq" value="0"><br><br>
+</form>
+
+<button type="button" onclick="getClickImpAcq()">Submit</button>
+
+
+<h4>Method#2 You can change the data within the js file:</h4>
+eg: data = '[{'+<br>
+            '"ad_slot_id"   :117,   '+<br>            
+            '"current_imp"    :500,   '+<br>
+            '"target_imp"   :1000,     '+<br>
+            '"current_click"  :1,    '+<br>
+            '"target_click"   :10,     '+<br>
+            '"current_acq"    :0,   '+<br>
+            '"target_acq"   :2,     '+<br>
+        '}]';<br>
+<br>
+<button type="button" onclick="">NOT DONE YET</button>
+
+<p id="demo"> Output </p>
+
+
+</body>
+</html>
+
