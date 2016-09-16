@@ -55,7 +55,7 @@ function createXHR(){
         return  new XMLHttpRequest();
     }
     if(typeof ActiveXobject == "undefined"){
-        throw new Error(" not support ");
+        throw new Error(" not support, change browser maybe? Chrome for exmaple.");
     }
     return  new ActiveXobject(arguments.callee.activeString);
 }
