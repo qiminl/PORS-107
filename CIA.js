@@ -16,14 +16,15 @@ var image_url, click_url, target_view_url = "";
 function getClickImpAcq(){
     alert ("waitttttttt, not done yet");
     var x = document.getElementById("frm1");
+    var error_message = "";
 
     if (x.target_acq.value > x.target_click.value){
-
+		error_message = "target acq is larger than click, which might not make sense.";
+        alert (error_message);
     } else {
         var click = x.target_click.value - x.current_click.value;
         var imp = x.target_imp.value - x.current_imp.value;
         var acq = x.target_acq.value - x.current_acq.value;
-
         requestImpClickAcq(x.ad_slot_id.value, imp, click, acq)
     }
 }
@@ -37,6 +38,7 @@ function getClickImpAcq(){
  */
 function requestImpClickAcq(id, imp, click, acq){
     var error_message = "";
+    var url = "http://adserver.vradx.com/sdk?p=" + id;
     if (id <=0 ){
         error_message = "id incorrect, Must have ad slot id.";
         alert (error_message);
@@ -47,6 +49,86 @@ function requestImpClickAcq(id, imp, click, acq){
         error_message = "For sercure reason, we should not generate more than imp5k/click1k/acq1k each time.";
         alert (error_message);
     } else {
+    	getData(url,checkResponse);
+	}
 
+}
+/**
+ * Use url update vt & ve
+ *
+ * @param {string}   url        request url
+ * @param {[Object]} callback   call back function
+ */
+function getData(url, callback){
+    var xhr =  createXHR(); //新建一个XMLHttpRequest对象
+    xhr.open("GET",url);      //打开一个请求
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === 4 && callback){
+            callback(xhr);    //call back fucntion.
+        }
     }
+    xhr.send(null);           //send request
+}
+/**
+ * Create XMLHttpRequest connection object.
+ */
+function createXHR(){
+    if( typeof  XMLHttpRequest != "undefined"){
+        return  new XMLHttpRequest();
+    }
+    if(typeof ActiveXobject == "undefined"){
+        throw new Error(" not support, change browser maybe? Chrome for exmaple.");
+    }
+    return  new ActiveXobject(arguments.callee.activeString);
+}
+
+/**
+ * Extract view_stat_url from server respond.
+ *
+ * @param {XMLHttpRequest}  res     response  
+ */
+function  checkResponse(res,imp, click, acq){
+
+    if (res.status === 200){
+        var inside = JSON.parse(res.response);
+        var view_stat_url = inside[id].view_stat_url;
+
+        if( view_stat_url != null){
+            target_view_url = view_stat_url.replace("${VIEW_TIME}", vt);
+            target_view_url = target_view_url.replace("${VIEW_EFFECTIVENESS}", ve);
+        }else{
+            target_view_url= null;
+            alert ("Null view_stat_url in response : ", view_stat_url);
+        }
+
+        if (inside[id].click_url != null){
+            click_ulr = inside[id].click_url;
+        } else {
+            click_url =null; console.log("no click_url");
+        }
+        
+        if (inside[id].image_url != null){
+            image_url = inside[id].image_url;
+            for (var i=0; i<imp; i++){
+                generateData(image_url);
+            }
+        } else{
+            image_url = null; console.log("no image_url");
+        }
+    }
+    else{
+        alert ("request faild, code = ", res.status);
+    }
+}
+
+
+/**
+ * use url update vt & ve
+ *
+ * @param {string} url   request url
+ */
+function generateData (url){
+    var xhr2 =  createXHR(); 
+    xhr2.open("GET",url);                 
+    xhr2.send(null);     
 }

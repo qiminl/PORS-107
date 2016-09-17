@@ -140,6 +140,7 @@ function  checkResponse(res){
         } else {
             click_url =null; console.log("no click_url");
         }
+        
         if (inside[id].image_url != null){
             image_url = inside[id].image_url;
         } else{
