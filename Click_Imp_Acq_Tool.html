@@ -1,6 +1,31 @@
 
 <!DOCTYPE html>
 <html>
+<style>
+#myProgress {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background-color: #ddd;
+}
+
+#myBar {
+  position: absolute;
+  width: 1%;
+  height: 100%;
+  background-color: #4CAF50;
+}
+
+/* If you want the label inside the progress bar */
+#label {
+    text-align: center; /* If you want to center it */
+    line-height: 30px; /* Set the line-height to the same as the height of the progress bar container, to center it vertically */
+    color: white;
+}
+
+</style>
+<body>
+
 
 <head>
   <title>UNDER CONSTRUCTION</title>
@@ -16,14 +41,14 @@
 <form id="frm1" action="form_action.asp">
 <h4>MUST HAVE </h4>
 	ad_slot_id: 	<input type="int" name="ad_slot_id" value=117><br><br>
-	current_imp:	<input type="int" name="current_imp" value=10><br><br>
 
 <h4>Default value set for changing click, imp, acq</h4>
-	target_imp: 	<input type="double" name="target_imp" value="-0"><br><br>
-	current_click: 	<input type="double" name="current_click" value="0"><br><br>
-	target_click: 	<input type="double" name="target_click" value="0"><br><br>
-	current_acq: 	<input type="double" name="current_acq" value="0"><br><br>
-	target_acq: 	<input type="double" name="target_acq" value="0"><br><br>
+    current_imp:    <input type="int" name="current_imp" value=0><br><br>
+	target_imp: 	<input type="int" name="target_imp" value="0"><br><br>
+	current_click: 	<input type="int" name="current_click" value="0"><br><br>
+	target_click: 	<input type="int" name="target_click" value="0"><br><br>
+	current_acq: 	<input type="int" name="current_acq" value="0"><br><br>
+	target_acq: 	<input type="int" name="target_acq" value="0"><br><br>
 </form>
 
 <button type="button" onclick="getClickImpAcq()">Submit</button>
@@ -43,6 +68,11 @@ eg: data = '[{'+<br>
 <button type="button" onclick="">NOT DONE YET</button>
 
 <p id="demo"> Output </p>
+
+<div id="myProgress">
+  <div id="myBar"></div>
+    <div id="label">10%</div>
+</div>
 
 
 </body>

@@ -9,7 +9,7 @@ data = '[{'+
         '}]';
 
 //global variable constructed the request url.
-var vt, ve, id= 0;
+var vt, ve= 0;
 var image_url, click_url, target_view_url = "";
 
 
@@ -21,12 +21,11 @@ function getClickImpAcq(){
 		error_message = "target acq is larger than click, which might not make sense.";
         alert (error_message);
     } else {
-        id = x.ad_slot_id.value;
+        var id = x.ad_slot_id.value;
         click = x.target_click.value - x.current_click.value;
         imp = x.target_imp.value - x.current_imp.value;
         acq = x.target_acq.value - x.current_acq.value;
         requestImpClickAcq(id, imp, click, acq);
-        
     }
 }
 
@@ -50,7 +49,7 @@ function requestImpClickAcq(id, imp, click, acq){
         error_message = "For sercure reason, we should not generate more than imp5k/click1k/acq1k each time.";
         alert (error_message);
     } else {
-    	getData(url,checkResponse, imp, click, acq);
+    	getData(url,checkResponse, imp, click, acq, id);
 	}
 
 }
@@ -60,12 +59,12 @@ function requestImpClickAcq(id, imp, click, acq){
  * @param {string}   url        request url
  * @param {[Object]} callback   call back function
  */
-function getData(url, callback, imp, click, acq){
+function getData(url, callback, imp, click, acq, id){
     var xhr =  createXHR(); //新建一个XMLHttpRequest对象
     xhr.open("GET",url);      //打开一个请求
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4 && callback){
-            callback(xhr, imp, click, acq);    //call back fucntion.
+            callback(xhr, imp, click, acq, id);    //call back fucntion.
         }
     }
     xhr.send(null);           //send request
@@ -88,11 +87,14 @@ function createXHR(){
  *
  * @param {XMLHttpRequest}  res     response  
  */
-function  checkResponse(res,imp, click, acq){
+function  checkResponse(res,imp, click, acq, id){
 
     if (res.status === 200){
-
+        console.log("id", id, res);
         var inside = JSON.parse(res.response);
+        if (inside[id].view_stat_url == null)
+            alert ("wrong url/ id slot");
+
         var view_stat_url = inside[id].view_stat_url;
         if( view_stat_url != null){
             target_view_url = view_stat_url.replace("${VIEW_TIME}", vt);
@@ -104,37 +106,33 @@ function  checkResponse(res,imp, click, acq){
 
         if (inside[id].click_url != null){
             click_url = inside[id].click_url;
+            /*(" 等着...小蜜蜂正在干活儿");*/
+            var elem = document.getElementById("myBar");
+            var width = 1;
+            for (var i= 0; i< click; i++){
+                generateData(click_url);
+                width = i/click;
+                elem.style.width = width + '%';
+            }
         } else {
             click_url =null; console.log("no click_url");
         }
         
         if (inside[id].image_url != null){
+            var origin_url = "http://adserver.vradx.com/sdk?p=" + id;
             image_url = inside[id].image_url;
-            for (var i=0; i<imp; i++){
-                generateData(image_url);
+            //alert(" 等着...小蜜蜂正在干活儿");
+            for (var i=0; i<imp-1; i++){
+                generateData(origin_url);
             }
         } else{
             image_url = null; console.log("no image_url");
         }
-
-        console.log(image_url, click_url, target_view_url);
-        var url = "http://adserver.vradx.com/sdk?p=" + id;
-        var i = 0;
-        console.log("done: imp=",imp);
-        for (i= 0; i< imp; i++){
-            generateData(url);
-        }
-        
-        for (i= 0; i< click; i++){
-            generateData(click_url);
-        }
-
-        console.log("done: i=", i);
-
     }
     else{
         alert ("request faild, code = ", res.status);
     }
+    document.getElementById("frm1").reset();
 }
 
 
@@ -148,3 +146,4 @@ function generateData (url){
     xhr2.open("GET",url);                 
     xhr2.send(null);     
 }
+
