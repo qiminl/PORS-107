@@ -14,7 +14,6 @@ var image_url, click_url, target_view_url = "";
 
 
 function getClickImpAcq(){
-    alert ("waitttttttt, not done yet");
     var x = document.getElementById("frm1");
     var error_message = "";
 
@@ -22,10 +21,12 @@ function getClickImpAcq(){
 		error_message = "target acq is larger than click, which might not make sense.";
         alert (error_message);
     } else {
-        var click = x.target_click.value - x.current_click.value;
-        var imp = x.target_imp.value - x.current_imp.value;
-        var acq = x.target_acq.value - x.current_acq.value;
-        requestImpClickAcq(x.ad_slot_id.value, imp, click, acq)
+        id = x.ad_slot_id.value;
+        click = x.target_click.value - x.current_click.value;
+        imp = x.target_imp.value - x.current_imp.value;
+        acq = x.target_acq.value - x.current_acq.value;
+        requestImpClickAcq(id, imp, click, acq);
+        
     }
 }
 
@@ -49,7 +50,7 @@ function requestImpClickAcq(id, imp, click, acq){
         error_message = "For sercure reason, we should not generate more than imp5k/click1k/acq1k each time.";
         alert (error_message);
     } else {
-    	getData(url,checkResponse);
+    	getData(url,checkResponse, imp, click, acq);
 	}
 
 }
@@ -59,12 +60,12 @@ function requestImpClickAcq(id, imp, click, acq){
  * @param {string}   url        request url
  * @param {[Object]} callback   call back function
  */
-function getData(url, callback){
+function getData(url, callback, imp, click, acq){
     var xhr =  createXHR(); //新建一个XMLHttpRequest对象
     xhr.open("GET",url);      //打开一个请求
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4 && callback){
-            callback(xhr);    //call back fucntion.
+            callback(xhr, imp, click, acq);    //call back fucntion.
         }
     }
     xhr.send(null);           //send request
@@ -90,9 +91,9 @@ function createXHR(){
 function  checkResponse(res,imp, click, acq){
 
     if (res.status === 200){
+
         var inside = JSON.parse(res.response);
         var view_stat_url = inside[id].view_stat_url;
-
         if( view_stat_url != null){
             target_view_url = view_stat_url.replace("${VIEW_TIME}", vt);
             target_view_url = target_view_url.replace("${VIEW_EFFECTIVENESS}", ve);
@@ -102,7 +103,7 @@ function  checkResponse(res,imp, click, acq){
         }
 
         if (inside[id].click_url != null){
-            click_ulr = inside[id].click_url;
+            click_url = inside[id].click_url;
         } else {
             click_url =null; console.log("no click_url");
         }
@@ -115,6 +116,21 @@ function  checkResponse(res,imp, click, acq){
         } else{
             image_url = null; console.log("no image_url");
         }
+
+        console.log(image_url, click_url, target_view_url);
+        var url = "http://adserver.vradx.com/sdk?p=" + id;
+        var i = 0;
+        console.log("done: imp=",imp);
+        for (i= 0; i< imp; i++){
+            generateData(url);
+        }
+        
+        for (i= 0; i< click; i++){
+            generateData(click_url);
+        }
+
+        console.log("done: i=", i);
+
     }
     else{
         alert ("request faild, code = ", res.status);

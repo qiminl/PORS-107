@@ -4,14 +4,18 @@
 			"id":"112",
 			"current_imp":10000,
 			"target_imp":50000000,
-			"target_vt":1231235,
+			"current_vt":0,
+			"target_vt":2000,
+			"current_ve":0,
 			"target_ve":68,
 		},
 		"2":{
 			"id":"2",
 			"current_imp":10000,
 			"target_imp":50000000,
-			"target_vt":1231235,
+			"current_vt":0,
+			"target_vt":2000,
+			"current_ve":0,
 			"target_ve":68,
 		}
 	}
