@@ -1,7 +1,6 @@
 data = '[{'+
             '"ad_slot_id"   :117,   '+
             '"current_imp"  :0,    '+
-            '"target_imp"   :-1,    '+
             '"current_vt"   :0,     '+
             '"target_vt"    :2000,   '+
             '"current_ve"   :0,     '+
@@ -17,12 +16,10 @@ var image_url, click_url, target_view_url = "";
  */
 function getVtVe(){
     var x = document.getElementById("frm1");
-    target_imp = x.target_imp.value ;
-    //test for target imp
-    if (target_imp<=0 )
-        target_imp = parseInt(x.current_imp.value) + 1;
-
-    if (target_imp<=x.current_imp.value){
+    target_imp = parseInt(x.current_imp.value) + 1;
+    if (x.target_ve.value >=100 || x.target_ve.value <0){
+        alert ("ve should be in range of [0,100]");
+    }else if (target_imp<=x.current_imp.value){
         alert ("target_imp less than current_imp, wrong data.")
     } else {
         id = x.ad_slot_id.value;
