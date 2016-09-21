@@ -94,7 +94,7 @@ function createXHR(){
         return  new XMLHttpRequest();
     }
     if(typeof ActiveXobject == "undefined"){
-        throw new Error(" not support, change browser maybe? Chrome for exmaple.");
+        throw new Error(" not supportted, change browser maybe? Chrome for exmaple.");
     }
     return  new ActiveXobject(arguments.callee.activeString);
 }
@@ -132,7 +132,7 @@ function  checkResponse(res){
             updateVtVe (target_view_url);
         }else{
             target_view_url= null;
-            alert ("Null view_stat_url in response : ", view_stat_url);
+            alert ("Check your ID maybe? Null view_stat_url in response : ", view_stat_url);
         }
 
         if (inside[id].click_url != null){

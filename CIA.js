@@ -107,12 +107,8 @@ function  checkResponse(res,imp, click, acq, id){
         if (inside[id].click_url != null){
             click_url = inside[id].click_url;
             /*(" 等着...小蜜蜂正在干活儿");*/
-            var elem = document.getElementById("myBar");
-            var width = 1;
             for (var i= 0; i< click; i++){
-                generateData(click_url);
-                width = i/click;
-                elem.style.width = width + '%';
+                generateData(click_url, updateProgressBar, i/click*100);
             }
         } else {
             click_url =null; console.log("no click_url");
@@ -123,7 +119,7 @@ function  checkResponse(res,imp, click, acq, id){
             image_url = inside[id].image_url;
             //alert(" 等着...小蜜蜂正在干活儿");
             for (var i=0; i<imp-1; i++){
-                generateData(origin_url);
+                generateData(origin_url, updateProgressBar, i/click*100);
             }
         } else{
             image_url = null; console.log("no image_url");
@@ -141,9 +137,21 @@ function  checkResponse(res,imp, click, acq, id){
  *
  * @param {string} url   request url
  */
-function generateData (url){
+function generateData (url, callback, progress){
     var xhr2 =  createXHR(); 
-    xhr2.open("GET",url);                 
+    xhr2.open("GET",url); 
+    xhr2.onreadystatechange = function(){
+        if(xhr2.readyState === 4 && callback){
+            callback(progress);    //call back fucntion.
+        }
+    }     
     xhr2.send(null);     
 }
 
+function updateProgressBar (progress){
+    console.log("progress", progress);
+    document.getElementById("demo").innerHTML = progress + '%';
+    var elem = document.getElementById("myBar");
+    elem.style.width = progress + '%';
+    document.getElementById("label").innerHTML = width * 1  + '%';
+}
