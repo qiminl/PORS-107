@@ -1,6 +1,6 @@
 data = '[{'+
             '"ad_slot_id"   :117,   '+
-            '"current_imp"  :0,    '+
+            '"current_view_count"  :0,    '+
             '"current_vt"   :0,     '+
             '"target_vt"    :2000,   '+
             '"current_ve"   :0,     '+
@@ -16,17 +16,17 @@ var image_url, click_url, target_view_url = "";
  */
 function getVtVe(){
     var x = document.getElementById("frm1");
-    target_imp = parseInt(x.current_imp.value) + 1;
+    target_imp = parseInt(x.current_view_count.value) + 1;
     if (x.target_ve.value >=100 || x.target_ve.value <0){
         alert ("ve should be in range of [0,100]");
-    }else if (target_imp<=x.current_imp.value){
-        alert ("target_imp less than current_imp, wrong data.")
+    }else if (target_imp<=x.current_view_count.value){
+        alert ("target_imp less than current_view_count, wrong data.")
     } else {
         id = x.ad_slot_id.value;
         vt = x.target_vt.value * target_imp
-            - x.current_vt.value * x.current_imp.value;
+            - x.current_vt.value * x.current_view_count.value;
         ve = x.target_ve.value * target_imp
-            - x.current_ve.value * x.current_imp.value;
+            - x.current_ve.value * x.current_view_count.value;
         requestVeVt(id, vt, ve, target_imp);
     }
 }
@@ -39,16 +39,16 @@ function getDataValue() {
     var output = JSON.parse(data);
     target_imp = output[0].target_imp;
     if (target_imp<=0 )
-        target_imp = parseInt(output[0].current_imp) + 1;
+        target_imp = parseInt(output[0].current_view_count) + 1;
 
-    if (target_imp<=output[0].current_imp){
-        alert ("target_imp less than current_imp, wrong data.")
+    if (target_imp<=output[0].current_view_count){
+        alert ("target_imp less than current_view_count, wrong data.")
     } else {
         id = output[0].ad_slot_id;
         vt = output[0].target_vt * target_imp 
-            - output[0].current_vt * output[0].current_imp;
+            - output[0].current_vt * output[0].current_view_count;
         ve = output[0].target_ve * target_imp 
-            - output[0].current_ve * output[0].current_imp;
+            - output[0].current_ve * output[0].current_view_count;
         requestVeVt(id , vt, ve, target_imp);
     }
 }
