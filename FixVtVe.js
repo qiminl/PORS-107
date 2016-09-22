@@ -9,7 +9,7 @@ data = '[{'+
         '}]';
 
 //global variable constructed the request url.
-var  id,target_imp, target_view_count, update_view_count= 0;
+var  id,target_imp, target_view_count, update_view_count, c= 0;
 var image_url, click_url, target_view_url = "";
 
 /**
@@ -163,14 +163,21 @@ function  checkResponse(res, vt, ve, update_view_count){
  */
 function updateVtVe (url, vt, ve){
     var xhr2 =  createXHR(); 
-    xhr2.open("GET",url);                 
-    xhr2.send(null);     
-    console.log(xhr2);   
+    xhr2.open("GET",url);   
+
     if (xhr2.readyState === 1){
+        var cc = document.getElementById('cc');
+        var number = cc.innerHTML;
+        number++;
+        cc.innerHTML = number;
+        /*
         document.getElementById("demo").innerHTML = target_view_url;
         var message = "Sent vt = " + vt + "; ve = " + ve +
             "\nExpected value: vt= "+ vt/target_view_count + "; ve = " + 
             ve/target_view_count + ";  imp = " + target_view_count;
         alert(message);
-    }
+        */
+    }              
+    xhr2.send(null);     
+    console.log(xhr2);   
 }
