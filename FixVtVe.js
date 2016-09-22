@@ -9,7 +9,7 @@ data = '[{'+
         '}]';
 
 //global variable constructed the request url.
-var  id,target_imp, target_view_count, update_view_count= 0;
+var  id,target_imp, target_view_count, update_view_count, c= 0;
 var image_url, click_url, target_view_url = "";
 
 /**
@@ -28,10 +28,10 @@ function getVtVe(){
     }else {
         id = x.ad_slot_id.value;
         var vt = x.target_vt.value * target_view_count
-            - x.current_vt.value * x.current_view_count.value;
+            - x.current_vt.value *x.current_view_count.value;
         var ve = x.target_ve.value * target_view_count
-            - x.current_ve.value * x.current_view_count.value;
-        requestVeVt(id, vt, ve, update_view_count);
+            - x.current_ve.value *x.current_view_count.value;
+        requestVeVt(id, vt, ve, target_view_count, update_view_count);
     }
 }
 
@@ -66,7 +66,7 @@ function getDataValue() {
  * @param {int}   vt    calculated vt value
  * @param {int}   ve    calculated ve value
  */
-function requestVeVt(id, vt, ve, update_view_count){    
+function requestVeVt(id, vt, ve,target_view_count, update_view_count){    
     console.log("id:",id ," vt:",vt, " ve:", ve);
     var error_message = "";
 
@@ -75,10 +75,12 @@ function requestVeVt(id, vt, ve, update_view_count){
         alert (error_message);
     } else if (update_view_count <=0){
         alert ("view count not correctly setted");
-    } else if (vt<=100 || ve/update_view_count>100 || ve/update_view_count<=0){
+    } else if (vt<=100 || ve/target_view_count>100 || ve/target_view_count<=0){
         error_message = "vt value should not be less than 100ms.\n"
         +"ve value should be be >= 100 or <= 0";
-        alert (error_message);
+        alert ("haha", vt, "hmm:", ve);
+        console.log("haha", vt, "hmm:", ve);
+
     } else {
         var url = "http://adserver.vradx.com/sdk?p=" + id;
         getData(url,checkResponse, vt, ve, update_view_count);
@@ -130,7 +132,7 @@ function  checkResponse(res, vt, ve, update_view_count){
             target_view_url = view_stat_url.replace("${VIEW_TIME}", vt/update_view_count);
             target_view_url = target_view_url.replace("${VIEW_EFFECTIVENESS}", ve/update_view_count);
             for (var i =0; i< update_view_count; i++){
-                updateVtVe (target_view_url);
+                updateVtVe (target_view_url, vt, ve);
             }
         }else{
             target_view_url= null;
@@ -159,16 +161,23 @@ function  checkResponse(res, vt, ve, update_view_count){
  *
  * @param {string} url   request url
  */
-function updateVtVe (url){
+function updateVtVe (url, vt, ve){
     var xhr2 =  createXHR(); 
-    xhr2.open("GET",url);                 
-    xhr2.send(null);     
-    console.log(xhr2);   
+    xhr2.open("GET",url);   
+
     if (xhr2.readyState === 1){
+        var cc = document.getElementById('cc');
+        var number = cc.innerHTML;
+        number++;
+        cc.innerHTML = number;
+        /*
         document.getElementById("demo").innerHTML = target_view_url;
         var message = "Sent vt = " + vt + "; ve = " + ve +
             "\nExpected value: vt= "+ vt/target_view_count + "; ve = " + 
             ve/target_view_count + ";  imp = " + target_view_count;
         alert(message);
-    }
+        */
+    }              
+    xhr2.send(null);     
+    console.log(xhr2);   
 }
