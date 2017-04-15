@@ -40,21 +40,20 @@
 
 <form id="frm1" action="form_action.asp">
 <h4>MUST HAVE </h4>
-	ad_slot_id: 	<input type="int" name="ad_slot_id" value=117><br><br>
+	ad_slot_id: 	<input type="string" name="ad_slot_id" value="eg. OqLNOWJONMr"><br><br>
 
 <h4>Default value set for changing click, imp, acq</h4>
-    current_imp:    <input type="int" name="current_imp" value=0><br><br>
-	target_imp: 	<input type="int" name="target_imp" value="0"><br><br>
+  current_imp:    <input type="int" name="current_imp" value=0><br><br>
+	target_imp: 	  <input type="int" name="target_imp" value="0"><br><br>
 	current_click: 	<input type="int" name="current_click" value="0"><br><br>
 	target_click: 	<input type="int" name="target_click" value="0"><br><br>
-	current_acq: 	<input type="int" name="current_acq" value="0"><br><br>
-	target_acq: 	<input type="int" name="target_acq" value="0"><br><br>
+	current_acq: 	  <input type="int" name="current_acq" value="0"><br><br>
+	target_acq: 	  <input type="int" name="target_acq" value="0"><br><br>
 </form>
 
 <button type="button" onclick="getClickImpAcq()">Submit</button>
 
-
-<h4>Method#2 You can change the data within the js file:</h4>
+<!-- <h4>Method#2 You can change the data within the js file:</h4>
 eg: data = '[{'+<br>
             '"ad_slot_id"   :117,   '+<br>            
             '"current_imp"    :500,   '+<br>
@@ -65,13 +64,13 @@ eg: data = '[{'+<br>
             '"target_acq"   :2,     '+<br>
         '}]';<br>
 <br>
-<button type="button" onclick="">NOT DONE YET</button>
+<button type="button" onclick="">NOT DONE YET</button> -->
 
 <p id="demo" value=1> 0 </p>
 
 <div id="myProgress">
   <div id="myBar"></div>
-    <div id="label">10%</div>
+    <div id="label">Progress Bar</div>
 </div>
 
 

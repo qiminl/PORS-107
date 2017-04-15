@@ -45,8 +45,8 @@ function requestImpClickAcq(id, imp, click, acq){
     } else if (imp<0 || click <0 || acq < 0){
         error_message = "some value gone wrong, you have negative count right now.";
         alert (error_message);
-    } else if (imp > 5000 || click >1000 || acq >1000){
-        error_message = "For sercure reason, we should not generate more than imp5k/click1k/acq1k each time.";
+    } else if (imp > 50000 || click >1000 || acq >1000){
+        error_message = "For sercure reason, we should not generate more than imp50k/click1k/acq1k each time.";
         alert (error_message);
     } else {
     	getData(url,checkResponse, imp, click, acq, id);
@@ -108,7 +108,7 @@ function  checkResponse(res,imp, click, acq, id){
             click_url = inside[id].click_url;
             /*(" 等着...小蜜蜂正在干活儿");*/
             for (var i= 0; i< click; i++){
-                generateData(click_url, updateProgressBar, i/click*100);
+                generateData(click_url, updateProgressBar, (i/click)*100);
             }
         } else {
             click_url =null; console.log("no click_url");
@@ -119,7 +119,7 @@ function  checkResponse(res,imp, click, acq, id){
             image_url = inside[id].image_url;
             //alert(" 等着...小蜜蜂正在干活儿");
             for (var i=0; i<imp-1; i++){
-                generateData(origin_url, updateProgressBar, i/click*100);
+                generateData(origin_url, updateProgressBar, (i/imp)*100);
             }
         } else{
             image_url = null; console.log("no image_url");
@@ -149,9 +149,9 @@ function generateData (url, callback, progress){
 }
 
 function updateProgressBar (progress){
-    console.log("progress", progress);
+    //console.log("progress", progress);
     document.getElementById("demo").innerHTML = progress + '%';
     var elem = document.getElementById("myBar");
     elem.style.width = progress + '%';
-    document.getElementById("label").innerHTML = width * 1  + '%';
+    //document.getElementById("label").innerHTML = width * 1  + '%';
 }
