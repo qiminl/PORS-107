@@ -45,8 +45,8 @@ function requestImpClickAcq(id, imp, click, acq){
     } else if (imp<0 || click <0 || acq < 0){
         error_message = "some value gone wrong, you have negative count right now.";
         alert (error_message);
-    } else if (imp > 50000 || click >1000 || acq >1000){
-        error_message = "For sercure reason, we should not generate more than imp50k/click1k/acq1k each time.";
+    } else if (imp > 5000 || click >5000 || acq >1000){
+        error_message = "For sercure reason, we should not generate more than imp5k/click5k/acq1k each time.";
         alert (error_message);
     } else {
     	getData(url,checkResponse, imp, click, acq, id);
